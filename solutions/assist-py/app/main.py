@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import os
 import httpx
+from app.database import get_connection, init_db
 
 app = FastAPI(title="Personal Assistant")
 
@@ -13,7 +14,9 @@ class Note(BaseModel):
     text: str
 
 
-notes: list[str] = []
+@app.on_event("startup")
+def startup():
+    init_db()
 
 
 @app.get("/")
@@ -112,11 +115,22 @@ async def weather(city: str):
 
 @app.post("/notes")
 async def create_note(note: Note):
-    notes.append(note.text)
-    return {"status": "saved", "note_id": len(notes) - 1, "total": len(notes)}
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO notes (text) VALUES (%s) RETURNING id",
+                (note.text,)
+            )
+            note_id = cur.fetchone()[0]
+            cur.execute("SELECT COUNT(*) FROM notes")
+            total = cur.fetchone()[0]
+    return {"status": "saved", "note_id": note_id, "total": total}
 
 
 @app.get("/notes")
 async def list_notes():
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT text FROM notes ORDER BY id")
+            notes = [row[0] for row in cur.fetchall()]
     return {"notes": notes, "count": len(notes)}
-
