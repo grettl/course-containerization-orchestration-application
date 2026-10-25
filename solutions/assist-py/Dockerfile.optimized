@@ -1,0 +1,30 @@
+# Первая стадия: установка Python-зависимостей
+FROM python:3.11-slim AS builder
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+# Вторая стадия: окружение для запуска приложения
+FROM python:3.11-slim AS runner
+
+LABEL maintainer="rekun@lab.local"
+LABEL version="2.1"
+
+WORKDIR /app
+
+# Установка curl для проверки состояния приложения
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Копирование библиотек из первой стадии и кода приложения
+COPY --from=builder /install /usr/local
+COPY app/ ./app/
+
+EXPOSE 5458
+
+# Проверка работоспособности приложения
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:5458/health || exit 1
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5458"]

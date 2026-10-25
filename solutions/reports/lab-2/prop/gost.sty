@@ -1,0 +1,50 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{prop/gost}[2026/10/25 Оформление отчёта]
+\usepackage{cmap}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage[left=30mm,right=15mm,top=20mm,bottom=20mm]{geometry}
+\usepackage{graphicx,float,array,indentfirst,caption,setspace,hyperref,needspace}
+\usepackage{titlesec,tabularx,booktabs}
+\usepackage[titles]{tocloft}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}
+\renewcommand{\cftdotsep}{1.5}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecfont}{\normalfont}
+\renewcommand{\cftsecpagefont}{\normalfont}
+\setlength{\cftbeforesecskip}{.45em}
+\setlength{\cftbeforesubsecskip}{.25em}
+\setlength{\cftbeforesubsubsecskip}{.15em}
+\cftsetindents{section}{0pt}{1.6em}
+\cftsetindents{subsection}{1.25em}{2.2em}
+\cftsetindents{subsubsection}{2.5em}{3.0em}
+\cftsetpnumwidth{1.8em}
+\cftsetrmarg{2.8em}
+\hypersetup{hidelinks,pdftitle={Практическая работа №2. Docker},pdfauthor={\reportAuthor}}
+\onehalfspacing
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+\sloppy
+\titleformat{\section}{\normalfont\bfseries\normalsize\raggedright}{\thesection}{.8em}{}
+\titleformat{\subsection}{\normalfont\bfseries\normalsize\raggedright}{\thesubsection}{.8em}{}
+\titleformat{\subsubsection}{\normalfont\bfseries\normalsize}{\thesubsubsection}{.8em}{}
+\titlespacing*{\section}{0pt}{1.25em}{.75em}
+\titlespacing*{\subsection}{0pt}{1.0em}{.55em}
+\titlespacing*{\subsubsection}{0pt}{.8em}{.4em}
+\renewcommand{\contentsname}{СОДЕРЖАНИЕ}
+\addto\captionsrussian{\renewcommand{\figurename}{Рисунок}\renewcommand{\tablename}{Таблица}}
+\captionsetup[figure]{font=small,labelsep=endash,justification=centering,skip=5pt}
+\captionsetup[table]{font=small,labelsep=endash,justification=raggedright,singlelinecheck=false,position=above,skip=5pt}
+\makeatletter
+\renewcommand{\tableofcontents}{%
+  \begin{center}\bfseries\normalfont\fontsize{14}{18}\selectfont СОДЕРЖАНИЕ\end{center}%
+  \vspace{.35cm}\noindent\hfill Стр.\par\vspace{.2cm}%
+  \begingroup\setstretch{1.15}\@starttoc{toc}\endgroup%
+}
+\makeatother
+\newcommand{\centerheading}[1]{\begin{center}\bfseries #1\end{center}\vspace{.35cm}}

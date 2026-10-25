@@ -1,0 +1,7 @@
+% Макросы для вставки иллюстраций и компактных пояснений.
+\newcommand{\shot}[3]{%
+\begin{figure}[H]
+  \centering\includegraphics[width=\linewidth,height=#3\textheight,keepaspectratio]{graphics/#1.png}%
+  \caption{#2}\label{fig:#1}
+\end{figure}}
+\newcommand{\oneitem}[2]{\par\noindent\textbf{#1} #2\par}
