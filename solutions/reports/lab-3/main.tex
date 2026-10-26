@@ -1,0 +1,97 @@
+% !TeX program = pdflatex
+% Загрузите main.tex, Paper.tex и gost.sty в один проект.
+% Основной документ: main.tex. Компилятор: pdfLaTeX.
+\documentclass[14pt,a4paper,oneside]{extreport}
+\usepackage{gost}
+
+% Заполните свои данные. Текст отчёта редактируется в Paper.tex.
+\newcommand{\LabNumber}{3}
+\newcommand{\LabTitle}{Персистентность и изоляция: добавляем БД и настраиваем сети}
+\newcommand{\CourseName}{Контейнеризация и оркестрация приложений}
+\newcommand{\StudentName}{Рекун Ирина Данииловна}
+\newcommand{\StudentShortName}{Рекун И.\,Д.}
+\newcommand{\StudentISU}{467228}
+\newcommand{\StudentGroup}{К3320}
+\newcommand{\FacultyName}{Факультет прикладной информатики}
+\newcommand{\DegreeProgramme}{11.03.02 Инфокоммуникационные технологии и системы связи}
+\newcommand{\EducationProgramme}{Программирование в инфокоммуникационных системах}
+\newcommand{\TeacherName}{Аминов Н.\,С.}
+\newcommand{\ReportCity}{Санкт-Петербург}
+\newcommand{\ReportYear}{2026}
+\newcommand{\RepositoryURL}{https://github.com/grettl/course-containerization-orchestration-application/tree/lab-3}
+
+\hypersetup{
+  pdftitle={Отчёт по лабораторной работе \LabNumber},
+  pdfauthor={\StudentName},
+  pdfsubject={\CourseName}
+}
+
+\usepackage{needspace}
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
+\renewcommand{\cftdotsep}{1.5}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftchapfont}{\normalfont}
+\renewcommand{\cftchappagefont}{\normalfont}
+\setlength{\cftbeforechapskip}{.55em}
+\setlength{\cftbeforesecskip}{.25em}
+\cftsetindents{chapter}{0pt}{1.6em}
+\cftsetindents{section}{1.25em}{2.2em}
+\titleformat{\chapter}[block]{\normalfont\normalsize\bfseries}{\thechapter}{.75em}{}
+\titlespacing*{\chapter}{0pt}{0pt}{.7\baselineskip}
+\titlespacing*{\section}{0pt}{.7\baselineskip}{.4\baselineskip}
+\captionsetup[figure]{font=small,skip=5pt}
+\captionsetup[table]{font=normalsize,skip=5pt}
+\newcommand{\shot}[2]{%
+  \begin{figure}[H]\centering
+  \includegraphics[width=\linewidth,keepaspectratio]{graphics/#1.png}
+  \caption{#2}\label{fig:#1}\end{figure}}
+\newcommand{\screenshotblock}[4]{%
+  \par\medskip\noindent\begin{minipage}{\linewidth}
+  \setlength{\parindent}{1.25cm}\indent #3\par
+  \shot{#1}{#2}
+  \indent #4\par
+  \end{minipage}\par}
+\begin{document}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \begin{center}
+    \fontsize{12pt}{16pt}\selectfont
+    Министерство науки и высшего образования Российской Федерации\\[0.25\baselineskip]
+    ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ\\
+    ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ВЫСШЕГО ОБРАЗОВАНИЯ\\[0.25\baselineskip]
+    НАЦИОНАЛЬНЫЙ ИССЛЕДОВАТЕЛЬСКИЙ УНИВЕРСИТЕТ ИТМО\\
+    ITMO University
+  \end{center}
+  \vspace{0.8\baselineskip}
+  \begin{center}
+    \textbf{ОТЧЁТ ПО ЛАБОРАТОРНОЙ РАБОТЕ №\LabNumber}
+  \end{center}
+  \vspace{0.4\baselineskip}
+  \begingroup
+  \setlength{\parindent}{0pt}
+  По дисциплине: \CourseName\par\medskip
+  Тема работы: \LabTitle\par\medskip
+  Обучающийся: \StudentName\par\medskip
+  Факультет: \FacultyName\par\medskip
+  Группа: \StudentGroup\par\medskip
+  Направление подготовки: \DegreeProgramme\par\medskip
+  Образовательная программа: \EducationProgramme\par
+  \endgroup
+  \vfill
+  \begin{tabularx}{\textwidth}{@{}l>{\centering\arraybackslash}Xr@{}}
+    Обучающийся & \rule{25mm}{0.4pt} & \underline{\makebox[38mm][c]{\StudentShortName}}\\
+    & {\fontsize{12pt}{14pt}\selectfont дата, подпись} &\\[0.4\baselineskip]
+    Руководитель & \rule{25mm}{0.4pt} & \underline{\makebox[38mm][c]{\TeacherName}}\\
+    & {\fontsize{12pt}{14pt}\selectfont дата, подпись} &
+  \end{tabularx}
+  \vfill
+  \begin{center}
+    \ReportCity\\
+    \ReportYear
+  \end{center}
+\end{titlepage}
+\setcounter{page}{2}
+\tableofcontents
+\input{Paper}
+\end{document}
