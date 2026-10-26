@@ -340,6 +340,91 @@ docker images | grep rekun-assistant
 Проверка состояния приложения:
 
 `curl http://localhost:8028/health`
+### 7. Запуск лабораторной работы
+
+Перед запуском необходимо установить Docker и перейти в папку `solutions/assist-py`.
+
+**Создание хранилища и сети:**
+
+```bash
+docker volume create rekun-pgdata
+docker network create rekun-backend
+```
+
+**Запуск PostgreSQL:**
+
+```bash
+docker run -d \
+  --name rekun-postgres \
+  --network rekun-backend \
+  -e POSTGRES_USER=rekun \
+  -e POSTGRES_PASSWORD=rekun28pass \
+  -e POSTGRES_DB=rekun28 \
+  -p 5458:5432 \
+  -v rekun-pgdata:/var/lib/postgresql/data \
+  postgres:16
+```
+
+Проверка готовности базы данных:
+
+```bash
+docker exec rekun-postgres pg_isready -U rekun -d rekun28
+```
+
+**Сборка приложения:**
+
+```bash
+docker build --pull=false -t rekun-assistant:lab3 .
+```
+
+**Запуск FastAPI:**
+
+```bash
+docker run -d \
+  --name rekun-assistant-lab3 \
+  --network rekun-backend \
+  -p 8028:5458 \
+  -e APP_OWNER=rekun \
+  -e APP_SECRET=secret28rekun \
+  -e DB_HOST=rekun-postgres \
+  -e DB_PORT=5432 \
+  -e DB_NAME=rekun28 \
+  -e DB_USER=rekun \
+  -e DB_PASSWORD=rekun28pass \
+  rekun-assistant:lab3
+```
+
+**Проверка приложения:**
+
+```bash
+curl http://localhost:8028/health
+curl http://localhost:8028/notes
+```
+
+Создание заметки:
+
+```bash
+curl -X POST http://localhost:8028/notes \
+  -H "Content-Type: application/json" \
+  -d '{"text":"Проверка PostgreSQL"}'
+```
+
+После повторного создания контейнера приложения заметки остаются в базе данных благодаря Docker volume `rekun-pgdata`.
+
+**Проверка bind mount:**
+
+```bash
+docker run --rm \
+  --mount type=bind,source="$(pwd)/config/app.conf",target=/app/config/app.conf,readonly \
+  --entrypoint cat \
+  rekun-assistant:lab3 /app/config/app.conf
+```
+
+**Проверка Docker-сети:**
+
+```bash
+docker run --rm --network rekun-backend alpine:latest ping -c 2 rekun-postgres
+```
 
 ### Результат
 
